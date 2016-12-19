@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <title>Codebreaker achievements</title>
+
+    <link rel="stylesheet" href="./app/assets/css/custom.css" type="text/css" />
+    <link rel="stylesheet" href="./app/assets/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="./app/assets/css/bootstrap-theme.css" type="text/css" />
+
+    <script type="text/javascript" src="./app/assets/js/custom.js"></script>
+    <script type="text/javascript" src="./app/assets/js/bootstrap.js"></script>
+  </head>
+
+  <body>
+    <div class='container'>
+      <p>Code : <%= $session['game'].secret_code %></p>
+      <p>Hint : <%= $session['game'].hint %></p>
+      <p>Hints : <%= $session['game'].hints %></p>
+      <p>Attempts : <%= $session['game'].attempts %></p>
+      <p>Response : <%= $session['game'].response %></p>
+
+      <form action='/check' method='POST'>
+        <p><input type='text' name='guess'/></p>
+        <input type='submit' />
+      </form>
+
+      <a href='/hint'>HINT</a>
+    </div>
+  </body>
+
+</html>

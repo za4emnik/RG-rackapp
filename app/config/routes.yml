@@ -1,0 +1,5 @@
+"/" :              "main#index"
+"/hint":           "main#hint"
+"/check":          "main#check"
+"/save":           "main#save"
+"/achievements":   "main#achievements"
