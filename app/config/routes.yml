@@ -1,5 +1,7 @@
 "/" :              "main#index"
+"/run" :           "main#run"
 "/hint":           "main#hint"
 "/check":          "main#check"
 "/save":           "main#save"
 "/achievements":   "main#achievements"
+"/won":            "main#you_won"

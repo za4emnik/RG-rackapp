@@ -7,4 +7,12 @@ attr_accessor :status, :header, :body, :env
     self.body = 'Not found!'
     self
   end
+
+  def redirect_to(url)
+    Rack::Response.new { |response| response.redirect(url) }
+  end
+
+  def get_binding
+      binding
+    end
 end

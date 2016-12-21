@@ -1,6 +1,6 @@
 require 'yaml'
 require 'require_all'
-require './app/config/router.rb'
+require 'codebreaker_gem'
 require_all './lib'
 require_all './app/controllers'
 
@@ -19,10 +19,8 @@ class GameMiddleware
   def call(env)
     $session = env['rack.session']
     $post = Rack::Request.new(env).POST
-    $response = Rack::Response.new(env)
     router = Router.new(env).run
     status, headers, body = @app.call(env)
     [status, headers, body << router.body]
   end
-
 end

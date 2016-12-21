@@ -1,24 +1,8 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <meta charset='utf-8'>
-    <title>Codebreaker achievements</title>
-
-    <link rel="stylesheet" href="./app/assets/css/custom.css" type="text/css" />
-    <link rel="stylesheet" href="./app/assets/css/bootstrap.css" type="text/css" />
-    <link rel="stylesheet" href="./app/assets/css/bootstrap-theme.css" type="text/css" />
-
-    <script type="text/javascript" src="./app/assets/js/custom.js"></script>
-    <script type="text/javascript" src="./app/assets/js/bootstrap.js"></script>
-  </head>
-
-  <body>
-    <div class='container'>
-      <% @achievements.each do |line| %>
-        <%= line %>
-      <% end %>
-    </div>
-  </body>
-
-</html>
+<div class='container'>
+  <h1 class='text-center'>Achievements</h1>
+  <div class='text-center'>
+    <% @achievements.each do |line| %>
+      <%= line %><br />
+    <% end %>
+  </div>
+</div>

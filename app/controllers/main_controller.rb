@@ -1,35 +1,37 @@
 class MainController < Controller
 
   def initialize
+    @irb = RenderIRB.new(self)
     if !$session['game']
-      $session['game'] = Game.new
+      $session['game'] = CodebreakerGem::Game.new
       $session['game'].generate_code
     end
   end
 
   def index
-    self.body = render
-    self
+    @irb.render 'wellcome', 'guest'
+  end
+
+  def run
+    $session['player'] = $post['player_name'] if $post['player_name']
+    @irb.render 'index'
   end
 
   def hint
     $session['game'].get_hint
-    self.body = render
-    self
+    @irb.render 'index'
   end
 
   def check
     return you_won if $session['game'].secret_code == $post['guess']
     $session['game'].guess = $post['guess']
     $session['game'].check
-    self.body = render
-    self
+    @irb.render 'index'
   end
 
   def you_won
     $session['game'] = nil
-    self.body = ERB.new(File.read('./app/views/congrats.html.erb')).result(binding)
-    self
+    @irb.render 'congrats'
   end
 
   def save
@@ -39,12 +41,11 @@ class MainController < Controller
   end
 
   def achievements
-    @achievements = Game.new.read_achievements
-    self.body = ERB.new(File.read('./app/views/achievements.html.erb')).result(binding)
-    self
+    @achievements = CodebreakerGem::Game.new.read_achievements
+    @irb.render 'achievements'
   end
 
   def render
-    ERB.new(File.read('./app/views/index.html.erb')).result(binding)
+    @irb.render 'index'
   end
 end

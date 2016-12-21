@@ -10,7 +10,8 @@ class Router < Controller
     if @routes.include?(@env['REQUEST_PATH'])
       controller_name, action_name = @routes[@env['REQUEST_PATH']].split("#")
       klass = Object.const_get "#{controller_name.capitalize}Controller"
-      klass.new.send(:"#{action_name}")
+      self.body = klass.new.send(:"#{action_name}")
+      self
     else
       not_found
     end
