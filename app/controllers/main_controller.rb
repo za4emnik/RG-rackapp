@@ -1,43 +1,71 @@
 class MainController < Controller
 
-  def initialize
+  attr_reader :response
+
+  def initialize(env)
+    @session = env['rack.session']
+    @request = Rack::Request.new(env)
     @irb = RenderIRB.new(self)
-    if !$session['game']
-      $session['game'] = CodebreakerGem::Game.new
-      $session['game'].generate_code
+    unless @session['game']
+      @session['game'] = CodebreakerGem::Game.new
+      @session['game'].generate_code
     end
   end
 
   def index
+    save_name if @request.post?
+    return redirect_to('/run') if @session['player']
     @irb.render 'wellcome', 'guest'
   end
 
   def run
-    $session['player'] = $post['player_name'] if $post['player_name']
+    return you_lose if @session['game'].attempts <= 0
     @irb.render 'index'
   end
 
   def hint
-    $session['game'].get_hint
-    @irb.render 'index'
+    @session['game'].get_hint
   end
 
   def check
-    return you_won if $session['game'].secret_code == $post['guess']
-    $session['game'].guess = $post['guess']
-    $session['game'].check
-    @irb.render 'index'
+    return you_won if @session['game'].secret_code == @request.params['guess']
+    @session['game'].guess = @request.params['guess']
+    @session['game'].check
+    redirect_to('/run')
   end
 
   def you_won
-    $session['game'] = nil
+    save_game
+    remove_game
     @irb.render 'congrats'
   end
 
-  def save
-    scores = $session['game'].get_scores
-    scores[:user_name] = $post['name']
-    $session['game'].save_achievement(scores)
+  def you_lose
+    remove_game
+    @irb.render 'lose'
+  end
+
+  def new_game
+    remove_game
+  end
+
+  def quit
+    remove_game
+    @session['player'] = nil
+  end
+
+  def save_game
+    scores = @session['game'].get_scores
+    scores[:user_name] = @session['player']
+    @session['game'].save_achievement(scores)
+  end
+
+  def save_name
+    if @request.post? && @request.params['player_name']
+      @session['player'] = @request.params['player_name']
+    else
+      redirect_to ('/')
+    end
   end
 
   def achievements
@@ -45,7 +73,22 @@ class MainController < Controller
     @irb.render 'achievements'
   end
 
-  def render
-    @irb.render 'index'
+  after_filter 'redirect_to_run', 'hint', 'quit', 'new_game'
+  before_filter 'check_name', 'run', 'you_won', 'check', 'hint'
+
+
+  private
+
+
+  def remove_game
+    @session['game'] = nil
+  end
+
+  def check_name
+    @response = redirect_to('/') unless @session['player']
+  end
+
+  def redirect_to_run
+    @response = redirect_to('/run')
   end
 end

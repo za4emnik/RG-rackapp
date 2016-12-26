@@ -2,6 +2,7 @@
 "/run" :           "main#run"
 "/hint":           "main#hint"
 "/check":          "main#check"
-"/save":           "main#save"
 "/achievements":   "main#achievements"
 "/won":            "main#you_won"
+"/new_game":       "main#new_game"
+"/quit":           "main#quit"

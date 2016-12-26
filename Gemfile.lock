@@ -1,0 +1,15 @@
+GEM
+  specs:
+    codebreaker_gem (0.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  codebreaker_gem
+
+RUBY VERSION
+   ruby 2.3.0p0
+
+BUNDLED WITH
+   1.13.6

@@ -3,13 +3,13 @@
 
   <div calss='row'>
     <div class='col-md-4'>
-      <p class='text-center process'>Attempts : <%= $session['game'].attempts %></p>
+      <p class='text-center process'>Attempts : <%= @session['game'].attempts %></p>
     </div>
     <div class='col-md-4'>
-      <p class='text-center process'><a href='/hint' class='button btn-primary btn-lg'>HINT</a> : <%= $session['game'].hint %></p>
+      <p class='text-center process'><a href='/hint' class='button btn-primary btn-lg'>HINT</a> : <%= @session['game'].hint || '' %></p>
     </div>
     <div class='col-md-4'>
-      <p class='text-center process'>Hints : <%= $session['game'].hints %></p>
+      <p class='text-center process'>Hints : <%= @session['game'].hints %></p>
     </div>
   </div>
 
@@ -28,9 +28,9 @@
 
   <div class='row'>
     <div class='col-md-12'>
-      <p class='text-center process'><%= $session['game'].response %></p>
+      <p class='text-center process'><%= @session['game'].response == [] ? '' : @session['game'].response %></p>
     </div>
   </div>
-  <!--<p>Code : <%= $session['game'].secret_code %></p> -->
+  <p>Code : <%= @session['game'].secret_code %></p>
 
 </div>

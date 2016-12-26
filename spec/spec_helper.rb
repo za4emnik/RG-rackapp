@@ -1,6 +1,8 @@
+require 'rack'
 require 'bundler/setup'
 require 'codebreaker_gem'
 require 'require_all'
+require_all './spec/shared_examples'
 require_all './app/controllers'
 require_all './lib'
 
@@ -8,7 +10,6 @@ RSpec.configure do |config|
   config.color = true
   config.formatter = :documentation
 end
-
 
 RSpec::Matchers.define :have_attr_accessor do |field|
   match do |object_instance|

@@ -1,11 +1,16 @@
 class Controller
 
-attr_accessor :status, :header, :body, :env
+attr_accessor :status, :headers, :body
+
+  def status_ok
+    @status = 200
+    @headers = {"Content-Type" => "text/html"}
+  end
 
   def not_found
-    self.status = 404
-    self.body = 'Not found!'
-    self
+    @status = 404
+    @headers = {"Content-Type" => "text/html"}
+    @body = 'Not found!'
   end
 
   def redirect_to(url)
@@ -13,6 +18,27 @@ attr_accessor :status, :header, :body, :env
   end
 
   def get_binding
-      binding
+    binding
+  end
+
+  def self.before_filter(method, *origins)
+    origins.each do |origin|
+      m = instance_method(origin)
+      define_method(origin) do |*args|
+        self.send(method)
+        m.bind(self).(*args)
+      end
     end
+  end
+
+  def self.after_filter(method, *origins)
+    origins.each do |origin|
+      m = instance_method(origin)
+      define_method(origin) do |*args|
+        m.bind(self).(*args)
+        self.send(method)
+      end
+    end
+  end
+
 end
